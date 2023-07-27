@@ -34,8 +34,8 @@ Weather
             <td>{{ weather.date }}</td>
             {% if request.user.is_authenticated %}
             <td>
-                <a class = "btn btn-outline-warning" href="edit/{{weather.id}}">Изменить</a> |
-                <a class = "btn btn-outline-danger" href="delete/{{weather.id}}">Удалить</a>
+                <a class = "btn btn-outline-warning" href="edit/{{weather.id}}">Edit</a> |
+                <a class = "btn btn-outline-danger" href="delete/{{weather.id}}">Delete</a>
             </td>
             {% endif %}
         </tr>
@@ -64,7 +64,7 @@ Weather
 
 {% if request.user.is_authenticated %}
 <div class="mb-3">
-    <a class = "btn btn-outline-success" href="create/">Добавить</a>
+    <a class = "btn btn-outline-success" href="create/">Add</a>
 </div>
 {% endif %}
 {% endblock content %}

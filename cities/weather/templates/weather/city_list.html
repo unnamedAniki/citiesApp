@@ -19,8 +19,8 @@ Cities
             <td>{{ city.name }}</td>
             {% if request.user.is_authenticated %}
             <td>
-                <a class = "btn btn-outline-warning" href="edit/{{city.id}}">Изменить</a> |
-                <a class = "btn btn-outline-danger" href="delete/{{city.id}}">Удалить</a>
+                <a class = "btn btn-outline-warning" href="edit/{{city.id}}">Edit</a> |
+                <a class = "btn btn-outline-danger" href="delete/{{city.id}}">Delete</a>
             </td>
             {% endif %}
         </tr>
@@ -48,7 +48,7 @@ Cities
     {% endif %}
 {% if request.user.is_authenticated %}
 <div class="mb-3">
-    <a class = "btn btn-outline-success" href="create/">Добавить</a>
+    <a class = "btn btn-outline-success" href="create/">Add</a>
 </div>
 {% endif %}
 {% endblock content %}
