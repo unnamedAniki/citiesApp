@@ -1,0 +1,40 @@
+{% extends "base.html"%}
+{% block title %}
+Graphs
+{% endblock title %}
+{% load widget_tweaks %}
+{% block content %}
+{% if weather_data is not None %}
+<div class="mb-3">
+  <h2 class="display-6">Temperature in {{ date }}'s {{ city_name }}</h2>
+</div>
+<div class="mb-3">
+  <canvas id="myChart"></canvas>
+</div>
+{%else%}
+<div class="mb-3">
+  <h2 class="display-6">Nothing to show</h2>
+</div>
+{% endif %}
+<div class="mb-3">
+  <a href="/graphs" class="btn btn-outline-primary">Show another graph</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{{ weather_data |json_script:"weather_data" }}
+{{ city_name |json_script:"city_name" }}
+{{ time |json_script:"time" }}
+<script>
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: JSON.parse(document.getElementById('time').textContent),
+      datasets: [{
+        label: 'Current temperature',
+        data: JSON.parse(document.getElementById('weather_data').textContent)
+      }]
+    }
+  });
+</script>
+{% endblock content %}

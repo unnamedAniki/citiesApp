@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}
+Main page
+{% endblock title %}
+{% block content %}
+
+<div class="mb-3">
+    <h2 class="display-6">Main page</h4>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="p-3 border bg-gray">
+            <p>This is a city page where you can add/edit/delete cities from the list</p>
+            <a  href="/cities/" class="btn btn-secondary">Go to cities page</a>
+        </div>
+    </div>
+    <div class="col">
+        <div class="p-3 border bg-light">
+            <p>This is a weather page where you can add/edit/delete weather's values from the list</p>
+            <a href="/weather/" class="btn btn-secondary">Go to weather page</a>
+        </div>
+    </div>
+    <div class="col">
+        <div class="p-3 border bg-light">
+            <p>This is a graph page where you can choose date and city for display in a graph</p>
+            <a href="/graphs/" class="btn btn-secondary">Go to graphs page</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

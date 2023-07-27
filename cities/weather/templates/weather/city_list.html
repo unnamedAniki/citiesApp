@@ -1,0 +1,54 @@
+{% extends "base.html"%}
+{% block title %}
+Cities
+{% endblock title %}
+{% block content %}
+<h2 class="display-6">Cities page</h2>
+    {% if object_list.count > 0 %}
+    <table class="table align-middle table-bordered caption-top">
+        <caption>List of cities</caption>
+        <thead>
+            <th>Name</th>
+
+            {% if request.user.is_authenticated %}
+            <th>Actions</th>
+            {% endif %}
+        </thead>
+        {% for city in object_list %}
+        <tr>
+            <td>{{ city.name }}</td>
+            {% if request.user.is_authenticated %}
+            <td>
+                <a class = "btn btn-outline-warning" href="edit/{{city.id}}">Изменить</a> |
+                <a class = "btn btn-outline-danger" href="delete/{{city.id}}">Удалить</a>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
+            </li>
+            {% endif %}
+
+            <li class="page-item">
+                <a class="page-link">Page {{ page_obj.number }} of {{ paginator.num_pages }}.</a>
+            </li>
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" >next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+{% if request.user.is_authenticated %}
+<div class="mb-3">
+    <a class = "btn btn-outline-success" href="create/">Добавить</a>
+</div>
+{% endif %}
+{% endblock content %}
