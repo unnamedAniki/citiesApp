@@ -7,7 +7,7 @@ Weather
 <form method="post">
     {% csrf_token %}
     <p class="display-5">Are you sure you want to delete "{{ object }}"?</p>
-    <input type="submit" value="Confirm" class="btn btn-danger">
-    <a href="/weather" class="btn btn-danger">Cancel</a>
+    <input type="submit" value="Confirm" class="btn btn-outline-danger">
+    <a href="/weather" class="btn btn-outline-success">Cancel</a>
 </form>
 {% endblock %}

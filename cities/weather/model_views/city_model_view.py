@@ -1,16 +1,17 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms import forms
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import CreateView, DeleteView, UpdateView
 
+from ..forms import CityForm
 from ..models import City
 from ..queries import city_queries
 
 
 class CityCreateView(LoginRequiredMixin, CreateView):
-    model = City
-    fields = ["name"]
+    form_class = CityForm
     template_name = "forms/city_form.html"
     success_url = "/cities"
 
@@ -20,7 +21,7 @@ class CityCreateView(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         form_name = self.request.POST.get("name")
         names = city_queries.get_city_by_name(form_name)
-        if names.count() != 0:
+        if names is not None:
             return redirect("/cities/create")
         super().post(self, request, *args, **kwargs)
         return redirect("/cities")
@@ -28,7 +29,7 @@ class CityCreateView(LoginRequiredMixin, CreateView):
 
 class CityEditView(LoginRequiredMixin, UpdateView):
     model = City
-    fields = ["name"]
+    form_class = CityForm
     template_name = "forms/city_form.html"
     success_url = "/cities"
 
@@ -38,8 +39,8 @@ class CityEditView(LoginRequiredMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         form_name = self.request.POST.get("name")
         names = city_queries.get_city_by_name(form_name)
-        if names.count() != 0:
-            return redirect("/cities/create")
+        if names is not None:
+            return redirect(f"/cities/edit/{self.get_object().id}")
         super().post(self, request, *args, **kwargs)
         return redirect("/cities")
 

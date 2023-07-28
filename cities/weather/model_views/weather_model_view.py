@@ -1,17 +1,17 @@
 from datetime import datetime
-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
-from django.urls import reverse
+from django.shortcuts import redirect, render
+from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
 
+from ..forms import WeatherForm
 from ..models import WeatherValue
 from ..queries import weather_queries
 
 
 class WeatherCreateView(LoginRequiredMixin, CreateView):
     model = WeatherValue
-    fields = ['date', 'value', 'cities']
+    form_class = WeatherForm
     template_name = "forms/weather_form.html"
     success_url = "/weather"
 
@@ -19,11 +19,11 @@ class WeatherCreateView(LoginRequiredMixin, CreateView):
         return reverse("user-login")
 
     def post(self, request, *args, **kwargs):
-        form_city = self.request.POST.get("city")
+        form_city = self.request.POST.get("cities")
         strdate = self.request.POST.get("date")
-        time = datetime.strptime(strdate, "%Y-%m-%d %H:%M").date()
-        print(strdate)
-        weathers = weather_queries.get_weather_by_city_and_date(form_city, time)
+        time = datetime.strptime(strdate, "%Y-%m-%d %H:%M")
+        weathers = weather_queries.get_single_weather_by_city_and_date(form_city, time)
+
         if weathers.count() != 0:
             return redirect("/weather/create")
         super().post(self, request, *args, **kwargs)
@@ -32,7 +32,7 @@ class WeatherCreateView(LoginRequiredMixin, CreateView):
 
 class WeatherEditView(LoginRequiredMixin, UpdateView):
     model = WeatherValue
-    fields = ['date', 'value', 'cities']
+    form_class = WeatherForm
     template_name = "forms/weather_form.html"
     success_url = "/weather"
 
@@ -40,19 +40,21 @@ class WeatherEditView(LoginRequiredMixin, UpdateView):
         return reverse("user-login")
 
     def post(self, request, *args, **kwargs):
-        form_city = self.request.POST.get("city")
-        strdate = self.request.POST.get("date")
-        time = datetime.strptime(strdate, "%Y-%m-%d %H:%M").date()
-        weathers = weather_queries.get_weather_by_city_and_date(form_city, time)
+        data = self.request.POST
+        form_city = data.get("cities")
+        strdate = data.get("date")
+        time = datetime.strptime(strdate, "%Y-%m-%d %H:%M")
+        weathers = weather_queries.get_single_weather_by_city_and_date(form_city, time, self.get_object().id)
+
         if weathers.count() != 0:
-            return redirect(f"/weather/edit/{self.model.pk}")
+            return redirect(f"/weather/edit/{self.get_object().id}")
         super().post(self, request, *args, **kwargs)
         return redirect("/weather")
 
 
 class WeatherDeleteView(LoginRequiredMixin, DeleteView):
     model = WeatherValue
-    success_url = "/weather"
+    success_url = reverse_lazy("weather")
 
     def get_login_url(self):
         return reverse("user-login")

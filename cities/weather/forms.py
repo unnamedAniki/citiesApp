@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.shortcuts import redirect
 
 from .queries import city_queries
@@ -8,16 +9,16 @@ from .models import WeatherValue, City
 class WeatherForm(forms.ModelForm):
     class Meta:
         model = WeatherValue
-        fields = ['date', 'value', 'cities_id']
+        fields = ['date', 'value', 'cities']
 
-    cities = city_queries.get_all_cities()
     date = forms.DateTimeField(label="Date",
+                               required=True,
                                help_text="Choose date and time")
     value = forms.FloatField(label="Value",
                              help_text="Input temperature value")
-    cities_id = forms.ModelChoiceField(help_text="Choice city",
-                                       empty_label="(Nothing)",
-                                       queryset=city_queries.get_all_cities())
+    cities = forms.ModelChoiceField(help_text="Choice city",
+                                    empty_label="(Nothing)",
+                                    queryset=city_queries.get_all_cities())
 
 
 class CityForm(forms.ModelForm):
