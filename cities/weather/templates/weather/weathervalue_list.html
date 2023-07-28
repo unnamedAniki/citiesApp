@@ -3,8 +3,8 @@
 Weather
 {% endblock title %}
 {% block content %}
+{% if object_list.count > 0 %}
 <h2 class="display-6">Weather page</h2>
-    {% if object_list.count > 0 %}
     <table class="table align-middle table-bordered caption-top">
         <caption>List of city's temperature</caption>
         <thead>
@@ -60,6 +60,12 @@ Weather
             {% endif %}
         </ul>
     </nav>
+    {% else %}
+    <div class="mb-3">
+        <p class="display-4">Nothing to show</p>
+        <p class="display-6">If you want to see all records - press "Show all"</p>
+        <a href="/weather" class="btn btn-outline-success">Show all</a>
+    </div>
     {% endif %}
 
 {% if request.user.is_authenticated %}
