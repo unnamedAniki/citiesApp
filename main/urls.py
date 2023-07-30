@@ -15,29 +15,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from apps.weather import views
 
-from apps.users.form_views import LoginFormView, LogoutFormView
-from apps.cities.model_views import CityCreateView, CityEditView, CityDeleteView
-from apps.weather.model_views import WeatherCreateView, WeatherEditView, WeatherDeleteView
-from apps.cities.list_views import CityListView
-from apps.weather.list_views import WeatherListView
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin-login'),
     path('', views.index, name='index'),
-    path('login/', LoginFormView.as_view(), name='user-login'),
-    path('logout/', LogoutFormView.as_view(), name='user-logout'),
-    path('weather/', WeatherListView.as_view(), name='weather'),
-    path('weather/create/', WeatherCreateView.as_view(), name='weather-create'),
-    path('weather/edit/<int:pk>', WeatherEditView.as_view(), name='weather-edit'),
-    path('weather/delete/<int:pk>', WeatherDeleteView.as_view(), name='weather-delete'),
-    path('cities/', CityListView.as_view(), name='cities'),
-    path('cities/create/', CityCreateView.as_view(), name='cities-create'),
-    path('cities/edit/<int:pk>', CityEditView.as_view(), name='cities-edit'),
-    path('cities/delete/<int:pk>', CityDeleteView.as_view(), name='cities-delete'),
+    path('', include('apps.users.urls')),
+    path('weather/', include('apps.weather.urls')),
+    path('cities/', include('apps.cities.urls')),
     path('graphs/', views.choose_date_for_draw, name='date-for-draw-graph'),
     path('show/', views.graphs, name='graphs')
 ]
