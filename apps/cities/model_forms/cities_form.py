@@ -8,4 +8,3 @@ class CityForm(forms.ModelForm):
         fields = ['name']
 
     name = forms.CharField(max_length=255)
-

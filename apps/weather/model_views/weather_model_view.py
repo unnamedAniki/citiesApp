@@ -19,8 +19,12 @@ class WeatherCreateView(LoginRequiredMixin, CreateView):
         return reverse("user-login")
 
     def post(self, request, *args, **kwargs):
-        form_city = self.request.POST.get("cities")
-        strdate = self.request.POST.get("date")
+        form = self.form_class(request.POST)
+        if not form.is_valid():
+            return render(self.request, 'forms/weather_form.html', {"form": form})
+        data = self.request.POST
+        form_city = data.get("cities")
+        strdate = data.get("date")
         time = datetime.strptime(strdate, "%Y-%m-%d %H:%M")
         weathers = weather_queries.get_single_weather_by_city_and_date(form_city, time)
 
@@ -40,6 +44,9 @@ class WeatherEditView(LoginRequiredMixin, UpdateView):
         return reverse("user-login")
 
     def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if not form.is_valid():
+            return render(self.request, 'forms/weather_form.html', {"form": form})
         data = self.request.POST
         form_city = data.get("cities")
         strdate = data.get("date")

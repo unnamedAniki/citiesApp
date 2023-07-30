@@ -6,7 +6,7 @@
     {% csrf_token %}
     <div class="mb-3">
         <div class='form-floating input-group' id='datetimepicker2'>
-            {% render_field form.date type="text" id='date_time' readonly='true' class='form-control plaintext'  %}
+            {% render_field form.date type="text" id='date_time' readonly='true' required='true' class='form-control plaintext'  %}
             <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datetimepicker">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
                   <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
@@ -30,24 +30,32 @@
             </script>
             <label for="date_time" class="form-label">Choose date and time</label>
         </div>
+        {% if form.errors.date %}
+            {%for error in form.errors.date %}
+                <p class="form-label" style="color: red">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        {% endif %}
     </div>
-    <div class="form-floating mb-3">
-        {% render_field form.value id="temperature" class='form-control' %}
-        <label for="temperature" class="form-label">Temperature</label>
+    <div class="mb-3">
+        <div class="form-floating">
+            {% render_field form.value id="temperature" class='form-control' %}
+            <label for="temperature" class="form-label">Temperature</label>
+        </div>
+        {% if form.errors.value %}
+            {%for error in form.errors.value %}
+                <p class="form-label" style="color: red">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        {% endif %}
     </div>
     <div class="form-floating mb-3">
         {% render_field form.cities class='form-control' %}
         <label for="exampleFormControlTextarea1" class="form-label">City</label>
     </div>
-    {% if form.errors %}
-    <div class="mb-3">
-        <p>get error</p>
-        {{form.errors}}
-    </div>
-    {% endif %}
     <button class="btn btn-outline-success">Save</button>
     <a class="btn btn-outline-danger" href="/weather">Cancel</a>
-    <!-- incase of any form related errors -->
-    {{form.errors}}
 </form>
 {% endblock %}

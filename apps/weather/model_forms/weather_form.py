@@ -17,3 +17,9 @@ class WeatherForm(forms.ModelForm):
     cities = forms.ModelChoiceField(help_text="Choice city",
                                     empty_label="(Nothing)",
                                     queryset=city_queries.get_all_cities())
+
+    def clean_value(self):
+        data = self.cleaned_data['value']
+        if data < -50 or data > 50:
+            raise forms.ValidationError('Temperature must be between -50 and +50 degrees')
+        return data
