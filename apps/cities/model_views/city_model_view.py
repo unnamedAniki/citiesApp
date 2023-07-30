@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic import CreateView, DeleteView, UpdateView
 
@@ -17,10 +17,9 @@ class CityCreateView(LoginRequiredMixin, CreateView):
         return reverse("user-login")
 
     def post(self, request, *args, **kwargs):
-        form_name = self.request.POST.get("name")
-        names = city_queries.get_city_by_name(form_name)
-        if names is not None:
-            return redirect("/cities/create")
+        form = self.form_class(request.POST)
+        if not form.is_valid():
+            return render(self.request, 'forms/city_form.html', {"form": form})
         super().post(self, request, *args, **kwargs)
         return redirect("/cities")
 
@@ -35,10 +34,9 @@ class CityEditView(LoginRequiredMixin, UpdateView):
         return reverse("user-login")
 
     def post(self, request, *args, **kwargs):
-        form_name = self.request.POST.get("name")
-        names = city_queries.get_city_by_name(form_name)
-        if names is not None:
-            return redirect(f"/cities/edit/{self.get_object().id}")
+        form = self.form_class(request.POST)
+        if not form.is_valid():
+            return render(self.request, 'forms/city_form.html', {"form": form})
         super().post(self, request, *args, **kwargs)
         return redirect("/cities")
 

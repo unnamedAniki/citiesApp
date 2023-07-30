@@ -12,15 +12,16 @@ City
         {% render_field form.name id='city_name' class='form-control' %}
         <label for="city_name" class="form-label">City name</label>
     </div>
-    {% if form.errors %}
-    <div class="mb-3">
-        <p>get error</p>
-        {{form.errors}}
-    </div>
+    {% if form.errors.name %}
+        {%for error in form.errors.name %}
+        <div class="mb-3">
+            <p class="form-label" style="color: red">
+                {{ error }}
+            </p>
+        </div>
+        {% endfor %}
     {% endif %}
     <button class="btn btn-outline-success">Save</button>
     <a class="btn btn-outline-danger" href="/cities">Cancel</a>
-    <!-- incase of any form related errors -->
-    {{form.errors}}
 </form>
 {% endblock content %}

@@ -55,6 +55,15 @@
         {% render_field form.cities class='form-control' %}
         <label for="exampleFormControlTextarea1" class="form-label">City</label>
     </div>
+    {% if form.errors.cities %}
+        {%for error in form.errors.cities %}
+        <div class="mb-3">
+            <p class="form-label" style="color: red">
+                {{ error }}
+            </p>
+        </div>
+        {% endfor %}
+    {% endif %}
     <button class="btn btn-outline-success">Save</button>
     <a class="btn btn-outline-danger" href="/weather">Cancel</a>
 </form>

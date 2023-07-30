@@ -22,14 +22,6 @@ class WeatherCreateView(LoginRequiredMixin, CreateView):
         form = self.form_class(request.POST)
         if not form.is_valid():
             return render(self.request, 'forms/weather_form.html', {"form": form})
-        data = self.request.POST
-        form_city = data.get("cities")
-        strdate = data.get("date")
-        time = datetime.strptime(strdate, "%Y-%m-%d %H:%M")
-        weathers = weather_queries.get_single_weather_by_city_and_date(form_city, time)
-
-        if weathers.count() != 0:
-            return redirect("/weather/create")
         super().post(self, request, *args, **kwargs)
         return redirect("/weather")
 
@@ -47,14 +39,7 @@ class WeatherEditView(LoginRequiredMixin, UpdateView):
         form = self.form_class(request.POST)
         if not form.is_valid():
             return render(self.request, 'forms/weather_form.html', {"form": form})
-        data = self.request.POST
-        form_city = data.get("cities")
-        strdate = data.get("date")
-        time = datetime.strptime(strdate, "%Y-%m-%d %H:%M")
-        weathers = weather_queries.get_single_weather_by_city_and_date(form_city, time, self.get_object().id)
 
-        if weathers.count() != 0:
-            return redirect(f"/weather/edit/{self.get_object().id}")
         super().post(self, request, *args, **kwargs)
         return redirect("/weather")
 
