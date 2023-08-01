@@ -8,6 +8,10 @@ def get_all_cities_with_weather():
     return WeatherValue.objects.all()
 
 
+def get_all_weathers_by_city(city_id: int):
+    return WeatherValue.objects.filter(cities_id=city_id)
+
+
 def get_all_cities():
     return City.objects.all()
 

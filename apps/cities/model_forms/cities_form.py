@@ -2,6 +2,7 @@ from django import forms
 from apps.cities.models import City
 from apps.cities.queries import city_queries
 
+
 class CityForm(forms.ModelForm):
     class Meta:
         model = City
