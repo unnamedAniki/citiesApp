@@ -28,3 +28,10 @@ def get_city_by_name(city_name: str):
         return City.objects.filter(name=city_name)
     except ObjectDoesNotExist:
         return None
+
+
+def get_city_by_name_and_id(city_name: str, city_id: int):
+    try:
+        return City.objects.filter(name=city_name).exclude(id=city_id)
+    except ObjectDoesNotExist:
+        return None

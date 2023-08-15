@@ -4,6 +4,7 @@
 <h4 class="display-6">Weather form</h4>
 <form method="POST">
     {% csrf_token %}
+    {% render_field form.id id='weather_id' type="hidden" class='form-control' %}
     <div class="mb-3">
         <div class='form-floating input-group' id='datetimepicker2'>
             {% render_field form.date type="text" id='date_time' readonly='true' required='true' class='form-control plaintext'  %}

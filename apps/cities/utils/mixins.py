@@ -14,6 +14,7 @@ class CityMixin(ProcessFormView):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+        print(form.errors)
         if not form.is_valid():
             return render(self.request, 'forms/city_form.html', {"form": form})
         super().post(self, request, *args, **kwargs)

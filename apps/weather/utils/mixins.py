@@ -14,6 +14,7 @@ class WeatherMixin(ProcessFormView):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+        print(form.errors)
         if not form.is_valid():
             return render(request, 'forms/weather_form.html', {"form": form})
         super().post(self, request, *args, **kwargs)

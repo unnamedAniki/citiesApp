@@ -10,8 +10,9 @@ from apps.weather.models import WeatherValue
 class WeatherForm(forms.ModelForm):
     class Meta:
         model = WeatherValue
-        fields = ['date', 'value', 'cities']
+        fields = ['id', 'date', 'value', 'cities']
 
+    id = forms.IntegerField(required=False)
     date = forms.DateTimeField(label="Date",
                                required=True,
                                help_text="Choose date and time")
@@ -27,14 +28,18 @@ class WeatherForm(forms.ModelForm):
             raise forms.ValidationError('Temperature must be between -50 and +50 degrees')
         return data
 
-    def clean_cities(self):
+    def clean(self):
         current_keys_value = list(self.cleaned_data.keys())
-
-        if not ['date', 'value', 'cities'] == current_keys_value:
-            raise forms.ValidationError('You must fill all fields')
+        print(current_keys_value)
+        weather_id = 0
+        if not ['date', 'value', 'cities', 'id'] == current_keys_value:
+            self.add_error('cities', 'You must fill all fields')
+            return
+        if self.cleaned_data.get('id'):
+            weather_id = self.cleaned_data['id']
+        print(weather_id)
         cities = self.cleaned_data['cities']
         date = self.cleaned_data['date']
-        exist_weather = weather_queries.get_single_weather_by_city_and_date(cities.id, date)
+        exist_weather = weather_queries.get_single_weather_by_city_and_date(cities.id, date, weather_id)
         if exist_weather.count() != 0:
-            raise forms.ValidationError('Temperature for this city and time already exists')
-        return cities
+            self.add_error('cities', 'Temperature for this city and time already exists')
