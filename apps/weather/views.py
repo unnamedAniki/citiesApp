@@ -21,9 +21,9 @@ def choose_date_for_draw(request):
 
 
 def graphs(request):
-    strdate = request.GET.get("date")
+    str_date = request.GET.get("date")
     city_id = request.GET.get("city")
-    date = datetime.strptime(strdate, "%Y-%m-%d")
+    date = datetime.strptime(str_date, "%Y-%m-%d")
     data = weather_queries.get_weather_by_city_and_date(city_id, date)
 
     if data.count() == 0:

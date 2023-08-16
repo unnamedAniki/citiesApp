@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import ProcessFormView
 
 from apps.cities.queries import city_queries
-from apps.weather.model_forms import WeatherForm, GetWeatherForm
+from apps.weather.model_forms import WeatherForm, GetWeatherForm, DateWeatherForm
 from apps.weather.models import WeatherValue
 from apps.weather.queries import weather_queries
 from main import settings
@@ -49,3 +49,14 @@ class GetWeatherMixin(ProcessFormView):
                                                 date=weather_data['dt_txt'],
                                                 temperature=temperature)
         return redirect("/weather")
+
+
+class DateWeatherMixin(ProcessFormView):
+    model = WeatherValue
+    form_class = DateWeatherForm
+    success_url = reverse_lazy("weather")
+    template_name = "weather/date_weather.html"
+
+    def post(self, request, *args, **kwargs):
+        date = request.POST['date']
+        return redirect(f"/weather/{date}")

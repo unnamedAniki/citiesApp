@@ -52,3 +52,14 @@ class GetWeatherForm(forms.ModelForm):
                                     empty_label="(Nothing)",
                                     to_field_name='name',
                                     queryset=city_queries.get_all_cities())
+
+
+class DateWeatherForm(forms.ModelForm):
+    class Meta:
+        model = WeatherValue
+        fields = ['date']
+
+    date = forms.DateTimeField(label="Date",
+                               required=True,
+                               help_text="Choose date and time")
+

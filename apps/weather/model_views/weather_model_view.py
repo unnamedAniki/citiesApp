@@ -3,7 +3,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
 
 from apps.weather.models import WeatherValue
-from apps.weather.utils.mixins import WeatherMixin, GetWeatherMixin
+from apps.weather.utils.mixins import WeatherMixin, GetWeatherMixin, DateWeatherMixin
 
 
 class WeatherCreateView(LoginRequiredMixin, WeatherMixin, CreateView):
@@ -30,3 +30,8 @@ class WeatherGetView(LoginRequiredMixin, GetWeatherMixin, CreateView):
 
     def get_login_url(self):
         return reverse("user-login")
+
+
+class WeatherDateView(LoginRequiredMixin, DateWeatherMixin, CreateView):
+    pass
+

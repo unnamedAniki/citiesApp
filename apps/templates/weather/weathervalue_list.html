@@ -68,10 +68,12 @@ Weather
     </div>
     {% endif %}
 
-{% if request.user.is_authenticated %}
+
 <div class="mb-3">
+    {% if request.user.is_authenticated %}
     <a class = "btn btn-outline-success" href="create/">Add</a>
     <a class = "btn btn-outline-success" href="get/">Get weather from API</a>
+    {% endif %}
+    <a class = "btn btn-outline-success" href="date/">Get weather by Date</a>
 </div>
-{% endif %}
 {% endblock content %}
