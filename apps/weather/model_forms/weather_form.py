@@ -30,16 +30,25 @@ class WeatherForm(forms.ModelForm):
 
     def clean(self):
         current_keys_value = list(self.cleaned_data.keys())
-        print(current_keys_value)
         weather_id = 0
         if not ['date', 'value', 'cities', 'id'] == current_keys_value:
             self.add_error('cities', 'You must fill all fields')
             return
         if self.cleaned_data.get('id'):
             weather_id = self.cleaned_data['id']
-        print(weather_id)
         cities = self.cleaned_data['cities']
         date = self.cleaned_data['date']
         exist_weather = weather_queries.get_single_weather_by_city_and_date(cities.id, date, weather_id)
         if exist_weather.count() != 0:
             self.add_error('cities', 'Temperature for this city and time already exists')
+
+
+class GetWeatherForm(forms.ModelForm):
+    class Meta:
+        model = WeatherValue
+        fields = ['cities']
+
+    cities = forms.ModelChoiceField(help_text="Choice city",
+                                    empty_label="(Nothing)",
+                                    to_field_name='name',
+                                    queryset=city_queries.get_all_cities())

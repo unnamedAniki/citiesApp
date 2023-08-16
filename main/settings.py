@@ -117,6 +117,15 @@ USE_I18N = True
 
 USE_TZ = True
 
+API_KEY = "6be25dbb132fea84a8f965083dbd1ff6"
+
+GEO_API_URI = "http://api.openweathermap.org/geo/1.0/direct?"
+
+WEATHER_API_URI = "https://api.openweathermap.org/data/2.5/forecast?"
+
+LIMIT_RESPONCE = 1
+
+KELVIN_DEGREES = -273.15
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
